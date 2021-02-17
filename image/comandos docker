@@ -4,6 +4,8 @@ iniciar o container em modo iterativo: sudo docker run -it nomeDaImagem
 
 salvar alterações realizadas: sudo docker commit idDoContainerAlterado nomeDaImagemAlterada
 
+alterar tag da imagem: docker tag oldTag newTag
+
 salvar imagem em arquivo: sudo docker save nomeDaImagem > nomeDaImagem.tar
 
 carregar imagem de arquivo: docker load < nomeDaImagem.tar

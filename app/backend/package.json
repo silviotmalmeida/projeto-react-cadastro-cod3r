@@ -6,6 +6,9 @@
   "scripts": {
     "start": "json-server --watch db.json --port 3001"
   },
+  "scripts_comentarios": {
+    "start": "inicia o webservice na porta 3001 e persiste os dados no arquivo db.json"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
