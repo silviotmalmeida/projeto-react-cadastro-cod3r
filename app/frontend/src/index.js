@@ -1,8 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './main/App';
-import registerServiceWorker from './registerServiceWorker';
+//arquivo inicial da aplicação
 
-ReactDOM.render(<App />, document.getElementById('root'));
+//importando o estilo
+import "./index.css";
+
+//importando as dependências
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./main/App";
+import registerServiceWorker from "./registerServiceWorker";
+
+//renderizando a aplicação
+ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();
