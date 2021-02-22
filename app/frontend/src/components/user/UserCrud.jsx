@@ -59,7 +59,8 @@ export default class UserCrud extends Component {
       //obtendo a lista de usuários atualizada
       const list = this.getUpdatedList(resp.data);
 
-      //atualizando o estado do atributo list
+      //atualizando o estado do atributo list e
+      //retornando para o estado inicial do atributo user
       this.setState({ user: initialState.user, list });
     });
   }
@@ -68,12 +69,13 @@ export default class UserCrud extends Component {
     //função auxiliar que retorna uma lista atualizada dos usuários
     //sem a necessidade de realizar nova requisição ajax GET
 
-    //obtendd todos os registros do estado atual do atributo list e
-    //excluindo o registro do usuário passado por parâmetro
+    //criando uma nova lista a partir do estado atual do atributo list
+    //e removendo o registro do usuário recebido por parâmetro
     const list = this.state.list.filter((u) => u.id !== user.id);
 
-    //caso seja uma inclusão,
-    //simplesmente inclui o novo registro no início do atributo list
+    //caso seja uma inclusão ou edição,
+    //inclui o usuário recebido por parâmetro no início do atributo list
+    //caso seja uma exclusão o atributo add deverá ser false
     if (add) list.unshift(user);
 
     //retorna a lista atualizada
@@ -143,12 +145,17 @@ export default class UserCrud extends Component {
         <hr />
         <div className="row">
           <div className="col-12 d-flex justify-content-end">
-            <button className="btn btn-primary" onClick={(e) => this.save(e)}>
+            <button
+              className="btn btn-primary"
+              // ao clicar no botão Salvar, chama a função save
+              onClick={(e) => this.save(e)}
+            >
               Salvar
             </button>
 
             <button
               className="btn btn-secondary ml-2"
+              // ao clicar no botão Cancelar, chama a função clear
               onClick={(e) => this.clear(e)}
             >
               Cancelar
@@ -160,17 +167,27 @@ export default class UserCrud extends Component {
   }
 
   load(user) {
+    //função para atualizar o estado atual do atributo user
+    //com os valores passados por parâmetro
     this.setState({ user });
   }
 
   remove(user) {
+    //função responsável pela exclusão de um registro no banco
+
+    //passando a url com o id do usuário a ser excluído
     axios.delete(`${baseUrl}/${user.id}`).then((resp) => {
+      //atualizando a lista de usuários
       const list = this.getUpdatedList(user, false);
+
+      //atualizando estado do atributo list
       this.setState({ list });
     });
   }
 
   renderTable() {
+    //função responsável por renderizar a tabela de usuários
+
     return (
       <table className="table mt-4">
         <thead>
@@ -181,24 +198,37 @@ export default class UserCrud extends Component {
             <th>Ações</th>
           </tr>
         </thead>
+        {/* renderizando as linhas da tabela */}
         <tbody>{this.renderRows()}</tbody>
       </table>
     );
   }
 
   renderRows() {
+    //função responsável por renderizar as linhas da tabela de usuários
+
+    //para cada item da lista user:
     return this.state.list.map((user) => {
       return (
+        // preenchendo os dados
         <tr key={user.id}>
           <td>{user.id}</td>
           <td>{user.name}</td>
           <td>{user.email}</td>
           <td>
-            <button className="btn btn-warning" onClick={() => this.load(user)}>
+            {/* criando o botão de editar */}
+            <button
+              className="btn btn-warning"
+              // ao clicar no botão editar, chama a função load
+              onClick={() => this.load(user)}
+            >
               <i className="fa fa-pencil"></i>
             </button>
+
+            {/* criando o botão de excluir */}
             <button
               className="btn btn-danger ml-2"
+              // ao clicar no botão excluir, chama a função remove
               onClick={() => this.remove(user)}
             >
               <i className="fa fa-trash"></i>
@@ -210,9 +240,14 @@ export default class UserCrud extends Component {
   }
 
   render() {
+    //função responsável pela criação do componente
+
     return (
       <Main {...headerProps}>
+        {/* renderizando o formulário */}
         {this.renderForm()}
+
+        {/* renderizando a tabela */}
         {this.renderTable()}
       </Main>
     );
